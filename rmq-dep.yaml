@@ -5,7 +5,7 @@ metadata:
   labels:
     app: vpromq01
 spec:
-  selector:
+  selectors:
     matchLabels:
       app: vpromq01
   replicas: 1

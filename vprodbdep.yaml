@@ -7,40 +7,41 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: vprodb
-  replicas: 1
+      app: vprodb #all pods with this label will be already condsidered in this dep def file
+  replicas: 1 # we just need 1 db we are not doing any clustering
   template:
     metadata:
       labels:
-        app: vprodb
-    spec:
+        app: vprodb  #our pod will have this label
+    spec: # specification abouit the pod
       containers:
         - name: vprodb
           image: issamh/vprofiledb:latest
           volumeMounts:
             - mountPath: /var/lib/mysql
-              name: vpro-db-data
+              name: vpro-db-data #this volume was created down and gets mounted here line 35
           ports:
-            - name: vprodb-port
+            - name: vprodb-port #name that we gave to our pod
               containerPort: 3306
           env:
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
+            - name: MYSQL_ROOT_PASSWORD #name of the variable
+              valueFrom: #we are going to set a value of this var and we are getting the info from ==>
                 secretKeyRef:
-                  name: app-secret
-                  key: db-pass
+                  name: app-secret #nname of the secret in the file app-secret
+                  key: db-pass #so the value will be fetched from this DB pass var and will be assigned to MYSQL_ROOT
+                  # in the container
       nodeSelector:
-        zone: us-east-1a
+        zone: us-east-1a #we have given a label to all nodes in this zone. our pod will run on the node which is in the same zone which has this label
       volumes:
         - name: vpro-db-data
           awsElasticBlockStore:
-            volumeID: vol-06bb801e614680b13
+            volumeID: vol-08796c06137c8dc78 #volume should be in the same zone
             fsType: ext4
 
       initContainers:
         - name: busybox
           image: busybox:latest
-          args: ["rm", "-rf", "/var/lib/mysql/lost+found"]
+          args: ["rm", "-rf", "/var/lib/mysql/lost+found"] #when the mount completed, we will execute this arg
           volumeMounts:
             - name: vpro-db-data
               mountPath: /var/lib/mysql

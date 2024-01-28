@@ -11,12 +11,12 @@ spec:
   replicas: 1
   template:
     metadata:
-      labels:
+      labels: #label for our pod
         app: vpromc
     spec:
       containers:
         - name: vpromc
-          image: memcached
+          image: memcached # this is the official docker image from docker hub. Not customized
           ports:
             - name: vpromc-port
               containerPort: 11211

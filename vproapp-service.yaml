@@ -5,8 +5,8 @@ metadata:
 spec:
   ports:
     - port: 80
-      targetPort: vproapp-port
+      targetPort: vproapp-port # this is port 8080
       protocol: TCP
   selector:
     app: vproapp
-  type: LoadBalancer
+  type: LoadBalancer # it will lunch an elastic load balancer

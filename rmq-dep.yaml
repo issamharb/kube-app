@@ -12,11 +12,11 @@ spec:
   template:
     metadata:
       labels:
-        app: vpromq01
+        app: vpromq01 #label of our pod
     spec:
       containers:
         - name: vpromq01
-          image: rabbitmq
+          image: rabbitmq #official image
           ports:
             - name: vpromq01-port
               containerPort: 15672
